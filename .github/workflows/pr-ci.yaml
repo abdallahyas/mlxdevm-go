@@ -1,0 +1,34 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  lint-code:
+    name: Golangci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare GO env
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.17'
+          cache: false
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.29
+
+  build-code:
+    name: ci-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare GO env
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.17'
+          cache: false
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build ci/sample.go
+        run: go build ci/sample.go
